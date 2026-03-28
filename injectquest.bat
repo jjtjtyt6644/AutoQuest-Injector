@@ -5,7 +5,7 @@ echo ====================================================
 echo   Vencord + Quest Plugin: Auto-Repair ^& Installer
 echo ====================================================
 
-:: [NEW] Kill Discord PTB process if it's running to unlock files
+:: Kill Discord PTB process if it's running to unlock files for injection
 echo Closing Discord PTB to prevent file locks...
 taskkill /f /im DiscordPTB.exe >nul 2>&1
 timeout /t 2 /nobreak >nul
@@ -24,7 +24,7 @@ if %errorlevel% neq 0 (
 )
 
 echo.
-echo [1/6] Checking Vencord Source...
+echo [1/5] Checking Vencord Source...
 IF EXIST "%VENCORD_DIR%" (
     IF NOT EXIST "%VENCORD_DIR%\package.json" (
         echo Vencord folder is broken. Repairing...
@@ -40,7 +40,7 @@ IF NOT EXIST "%VENCORD_DIR%" (
 )
 
 echo.
-echo [2/6] Checking Quest Plugin...
+echo [2/5] Checking Quest Plugin...
 IF NOT EXIST "%PLUGIN_DIR%" (
     echo Downloading CompleteDiscordQuest plugin...
     git clone https://github.com/nicola02nb/completeDiscordQuest.git "%PLUGIN_DIR%"
@@ -52,12 +52,12 @@ IF NOT EXIST "%PLUGIN_DIR%" (
 )
 
 echo.
-echo [3/6] Syncing Submodules...
+echo [3/5] Syncing Submodules...
 pushd "%VENCORD_DIR%"
 git submodule update --init --recursive
 
 echo.
-echo [4/6] Installing Dependencies (This may take a minute)...
+echo [4/5] Installing Dependencies (This may take a minute)...
 call npx pnpm install
 if %errorlevel% neq 0 (
     echo ERROR: pnpm install failed.
@@ -66,34 +66,18 @@ if %errorlevel% neq 0 (
 )
 
 echo.
-echo [5/6] Building and Injecting...
+echo [5/5] Building and Injecting...
 call npx pnpm build
 call npx pnpm inject --branch ptb
-
-echo.
-echo [6/6] Launching Discord PTB...
-set "PTB_PATH=%LocalAppData%\DiscordPTB"
-set "FINAL_EXE="
-
-:: Find the newest version of the PTB executable
-for /f "delims=" %%i in ('dir /s /b "%PTB_PATH%\DiscordPTB.exe" 2^>nul') do (
-    set "FINAL_EXE=%%i"
-)
-
-if defined FINAL_EXE (
-    echo Launching Discord PTB and exiting...
-    :: Start Discord detached so logs don't show up here
-    start "" "%FINAL_EXE%"
-) else (
-    echo [!] Launch failed: Could not find DiscordPTB.exe automatically.
-    echo Please open Discord PTB manually.
-    pause
-)
 
 popd
 echo.
 echo ====================================================
-echo   DONE! Vencord is ready. Closing in 3 seconds...
+echo   SUCCESS: Vencord has been injected into PTB.
 echo ====================================================
-timeout /t 3 /nobreak >nul
+echo.
+echo  [!] Please open Discord PTB manually now.
+echo      If it's already open, please restart it.
+echo.
+pause
 exit
