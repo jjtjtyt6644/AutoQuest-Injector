@@ -40,7 +40,119 @@ IF NOT EXIST "%VENCORD_DIR%" (
 )
 
 echo.
+echo [2/5] Checking Quest Plugin...@echo off
+setlocal enabledelayedexpansion
+
+echo ====================================================
+echo   Vencord + Quest Plugin: Auto-Repair ^& Installer
+echo ====================================================
+
+:: 1. Pre-Flight Checks (No Admin Required)
+echo [0/5] Running Pre-Flight Checks...
+
+:: Check for Git
+git --version >nul 2>&1
+if %errorlevel% neq 0 (
+    echo [ERROR] Git is not installed or not in your System PATH.
+    echo Please install it from https://git-scm.com/ and restart your terminal.
+    pause
+    exit /b 1
+)
+
+:: Check for Node.js
+node -v >nul 2>&1
+if %errorlevel% neq 0 (
+    echo [ERROR] Node.js is not installed! 
+    echo Please download the LTS version from https://nodejs.org/
+    pause
+    exit /b 1
+)
+
+:: Check for Internet Connection (Quick ping)
+ping -n 1 8.8.8.8 >nul 2>&1
+if %errorlevel% neq 0 (
+    echo [ERROR] No internet connection detected. Check your Wi-Fi!
+    pause
+    exit /b 1
+)
+
+:: Kill Discord PTB process to prevent "File in Use" errors
+echo Closing Discord PTB to prevent file locks...
+taskkill /f /im DiscordPTB.exe >nul 2>&1
+timeout /t 2 /nobreak >nul
+
+REM --- FOLDER SETTINGS ---
+SET "ROOT_DIR=%~dp0"
+SET "VENCORD_DIR=%ROOT_DIR%Vencord Modified"
+SET "PLUGIN_DIR=%VENCORD_DIR%\src\userplugins\CompleteDiscordQuest"
+
+echo.
+echo [1/5] Checking Vencord Source...
+IF EXIST "%VENCORD_DIR%" (
+    IF NOT EXIST "%VENCORD_DIR%\package.json" (
+        echo [!] Vencord folder is corrupted. Re-downloading...
+        rd /s /q "%VENCORD_DIR%"
+    )
+)
+
+IF NOT EXIST "%VENCORD_DIR%" (
+    echo Creating "Vencord Modified" and downloading fresh source...
+    git clone https://github.com/Vendicated/Vencord.git "%VENCORD_DIR%" || (
+        echo [ERROR] Git clone failed. Check your connection or permissions.
+        pause
+        exit /b 1
+    )
+)
+
+echo.
 echo [2/5] Checking Quest Plugin...
+IF NOT EXIST "%PLUGIN_DIR%" (
+    git clone https://github.com/jjtjtyt6644/AutoQuest-Plugin.git "%PLUGIN_DIR%" || (
+        echo [ERROR] Failed to download the Quest Plugin.
+        pause
+        exit /b 1
+    )
+) else (
+    echo Updating Quest plugin...
+    pushd "%PLUGIN_DIR%" && (
+        git pull
+        popd
+    ) || (
+        echo [WARNING] Could not update plugin. Using existing files...
+        popd
+    )
+)
+
+echo.
+echo [3/5] Syncing Submodules...
+pushd "%VENCORD_DIR%" || exit /b 1
+git submodule update --init --recursive || echo [WARNING] Submodule sync failed.
+
+echo.
+echo [4/5] Installing Dependencies...
+:: Use npx to run pnpm even if it's not globally installed
+call npx pnpm install || (
+    echo [ERROR] pnpm install failed. Try deleting the 'node_modules' folder inside 'Vencord Modified'.
+    pause
+    exit /b 1
+)
+
+echo.
+echo [5/5] Building and Injecting...
+echo This may take a few moments...
+call npx pnpm build || (echo [ERROR] Build failed. Check for code errors. & pause & exit /b 1)
+call npx pnpm inject --branch ptb || (echo [ERROR] Injection failed. Ensure Discord is fully closed. & pause & exit /b 1)
+
+popd
+echo.
+echo ====================================================
+echo   SUCCESS: Injected into Discord PTB.
+echo ====================================================
+echo.
+echo  [!] Setup complete. You can now open Discord PTB.
+echo.
+pause
+exit
 IF NOT EXIST "%PLUGIN_DIR%" (
     echo Downloading CompleteDiscordQuest plugin...
     git clone https://github.com/jjtjtyt6644/AutoQuest-Plugin.git "%PLUGIN_DIR%"
