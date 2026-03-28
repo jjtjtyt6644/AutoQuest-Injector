@@ -1,0 +1,11 @@
+# Ignore the Vencord build/source directory
+Vencord/
+
+# Ignore OS-specific files
+Thumbs.db
+.DS_Store
+
+# Ignore Node.js logs (if any are created in root)
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
