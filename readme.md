@@ -1,52 +1,56 @@
-# 🛠️ Vencord + Quest Plugin: Auto-Installer
+# 🚀 AutoQuest Injector GUI
 
-This repository contains an automated setup and repair script for the **CompleteDiscordQuest** plugin. It handles the entire environment setup, from cloning Vencord to injecting the plugin into your Discord client.
+A premium, fully-automated graphical installer for Vencord and the CompleteDiscordQuest plugin. 
+
+Designed to make the installation process seamless, the AutoQuest Injector provides a beautiful glassmorphism-inspired setup wizard that handles everything from environment checks to Discord client management and plugin injection.
 
 ---
 
-## 🚀 One-Click Installation
+## ✨ Key Features
 
-The `install.bat` script is designed to be the only thing you need to run. It automates the following:
-
-1.  **Environment Check:** Verifies if Node.js is installed.
-2.  **Process Management:** Automatically closes Discord PTB to prevent file-lock errors.
-3.  **Vencord Setup:** Clones a fresh copy of Vencord (or repairs it if corrupted).
-4.  **Plugin Sync:** Downloads the latest version of the Quest Plugin.
-5.  **Dependency Management:** Runs `pnpm install` and `git submodule update`.
-6.  **Build & Inject:** Compiles the code and injects it specifically into the **Discord PTB** branch.
-7.  **Auto-Launch:** Opens Discord PTB for you once the process is finished.
+* **Premium UI/UX**: A sleek, dark-mode graphical wrapper featuring custom transitions and step-by-step navigation.
+* **Smart Discord Detection**: Automatically scans your system for standard Discord, Discord PTB, and Discord Canary.
+* **Automated PTB Setup**: AutoQuest requires Discord PTB. The installer can automatically uninstall regular Discord and set up Discord PTB for you in one click.
+* **Pre-flight Checks**: Verifies that Git and Node.js are securely installed on your system before beginning.
+* **Persistent Configuration**: Remembers your preferred Vencord download and installation directories for future updates.
+* **One-Click Uninstallation**: Seamlessly and safely removes Vencord and the plugin from your Discord client.
 
 ---
 
 ## 📥 How to Use
 
-1.  **Download** this repository (or just the `install.bat` file).
-2.  **Place** the file in an empty folder where you want your Vencord source to live.
-3.  **Right-click `install.bat`** and select **Run as Administrator**.
-4.  Wait for the "DONE!" message, and Discord PTB will launch automatically.
+### Using the Compiled Installer (Recommended)
+You do not need to install Node.js globally just to run the GUI if you have the `.exe`.
+1. Download `AutoQuest Injector Setup.exe` from the Releases page.
+2. Run the executable. It will automatically add a shortcut to your Desktop.
+3. Follow the animated setup wizard to install the plugin.
+4. **Discord Updated?** Simply open the app from your desktop again and click **Start Injection** to re-apply the patch.
+
+### Running from Source
+If you are developing or running the tool directly from the repository:
+1. Ensure both **Git** and **Node.js (LTS)** are installed.
+2. Double-click `start-gui.bat` to launch the premium UI.
+3. To package your own `.exe` file for distribution, run `build-exe.bat`. The built installer will appear in the `ui/dist` folder.
 
 ---
 
-## ⚠️ Requirements
+## 🛠️ Requirements
 
-To use this injector, you must have the following installed on your system:
-
-* **Git:** [Download Git](https://git-scm.com/downloads) (Required for cloning the source).
-* **Node.js (LTS):** [Download Node.js](https://nodejs.org/) (Required to build the plugin).
-* **Discord PTB:** This script targets the Public Test Build by default.
+The GUI handles most of the complex work, but your system must meet these baseline requirements for the compiling backend to work:
+* **Operating System**: Windows 10 / 11
+* **Git**: [Download Git](https://git-scm.com/downloads) (Required for pulling the Vencord source).
+* **Node.js**: [Download Node.js](https://nodejs.org/) (Required for compiling the Vencord injection layer).
 
 ---
 
-## 🛠️ Troubleshooting
+## 🏗️ Project Architecture
 
-| Issue | Solution |
-| :--- | :--- |
-| **"Node is not recognized"** | Ensure Node.js is installed and you have restarted your PC. |
-| **Injection Failed** | Make sure Discord PTB is completely closed (check system tray). |
-| **Git Clone Error** | Check your internet connection or ensure Git is in your System PATH. |
+The app is split into two robust layers:
+1. **Frontend (Electron)**: Located in the `/ui/` directory. Provides the multi-step `index.html` interface styled with custom CSS glassmorphism. Communicates via IPC bridges to handle OS-level checks.
+2. **Backend Engine (Batch)**: The `injectquest.bat` file acts as the core engine. Driven dynamically by the Electron frontend, it accepts parameterized inputs to handle silent cloning, dependency management, and silent Discord PTB auto-installations.
 
 ---
 
 ## 📜 Credits
-* **Script Author:** [Junyu]
-* **Framework:** [Vencord](https://vencord.dev/)
+* **GUI & Automation Architecture:** Junyu ([jjtjtyt6644](https://github.com/jjtjtyt6644/AutoQuest-Injector))
+* **Core Framework:** Powered by [Vencord](https://vencord.dev/)

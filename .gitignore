@@ -1,5 +1,7 @@
 # Ignore the Vencord build/source directory
-Vencord/
+Vencord_Modified/
+
+ui/
 
 # Ignore OS-specific files
 Thumbs.db
@@ -9,4 +11,8 @@ Thumbs.db
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Ignore batch files
 push.bat
+build-exe.bat
+start-gui.bat
