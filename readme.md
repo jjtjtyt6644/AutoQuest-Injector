@@ -33,7 +33,7 @@ As this is an independent, open-source project, you will encounter a **"Windows 
 > [!TIP]
 > **Check the security yourself**: To verify this tool is safe, you can upload our `.exe` to [VirusTotal](https://www.virustotal.com).
 > 
-> [![VirusTotal Scan](https://img.shields.io/badge/VirusTotal-Scan_Report-blue?logo=virustotal)](https://www.virustotal.com/gui/file/cf6b220954ef96b25556ca78d1e2725b275a3dc8cf0201db20941c485a21f0a0?nocache=1)
+> [![VirusTotal Scan](https://img.shields.io/badge/VirusTotal-Scan_Report-blue?logo=virustotal)](https://www.virustotal.com/gui/file/4bbb1e7e89ddd51c21476663f69aac11e366fa0a54c15786c635cb4fed603482?nocache=1)
 
 ---
 
@@ -41,7 +41,7 @@ As this is an independent, open-source project, you will encounter a **"Windows 
 
 ### Using the Compiled Installer (Recommended)
 
-1.  **Download**: Get the `AutoQuest Injector Setup.exe` from the [Releases page](https://github.com/jjtjtyt6644/AutoQuest-Injector/releases/download/v1.2.0/AutoQuest.Injector.Setup.1.2.0.exe) or press this button
+1.  **Download**: Get the `AutoQuest Injector Setup.exe` from the [Releases page](https://github.com/jjtjtyt6644/AutoQuest-Injector/releases/download/V1.2.0/AutoQuest.Injector.Setup.1.2.0.exe) or press this button
 2.  **Install**: Run the executable. It will automatically add a shortcut to your Desktop.
 3.  **Inject**: Follow the animated setup wizard to clone the source and install the plugin.
 4.  **Discord Updated?**: Whenever Discord updates, simply open the app from your desktop and click **Start Injection** to re-patch the new version files.
