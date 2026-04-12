@@ -7,11 +7,10 @@ echo ====================================================
 
 :: --- CONFIGURATION ---
 SET "ROOT_DIR=%~dp0"
-IF "%~1" NEQ "" (
-    SET "VENCORD_BASE=%~1"
-) ELSE (
-    SET "VENCORD_BASE=%ROOT_DIR%"
-)
+SET "VENCORD_BASE=%~1"
+
+IF "!VENCORD_BASE!"=="" SET "VENCORD_BASE=!ROOT_DIR!"
+
 :: Ensure trailing backslash before appending
 IF NOT "!VENCORD_BASE:~-1!"=="\" SET "VENCORD_BASE=!VENCORD_BASE!\"
 SET "VENCORD_DIR=!VENCORD_BASE!Vencord_Modified"
@@ -21,12 +20,7 @@ SET "PLUGIN_DIR=!VENCORD_DIR!\src\userplugins\CompleteDiscordQuest"
 SET "MODE=%~2"
 IF "!MODE!"=="" SET "MODE=install"
 
-:: Discord Setup Mode: skip, install-ptb, replace-discord
-SET "DISCORD_MODE=%~3"
-IF "!DISCORD_MODE!"=="" SET "DISCORD_MODE=skip"
-
 echo Mode: !MODE!
-echo Discord Mode: !DISCORD_MODE!
 echo.
 
 :: --- PRE-FLIGHT CHECKS ---
@@ -46,52 +40,15 @@ if %errorlevel% neq 0 (
     exit /b 1
 )
 
-:: --- DISCORD SETUP ---
-IF "!DISCORD_MODE!"=="replace-discord" GOTO REPLACE_DISCORD
-IF "!DISCORD_MODE!"=="install-ptb" GOTO INSTALL_PTB_ONLY
-GOTO AFTER_DISCORD_SETUP
-
-:REPLACE_DISCORD
-echo [DISCORD] Removing regular Discord...
-taskkill /f /im Discord.exe >nul 2>&1
-taskkill /f /im DiscordCanary.exe >nul 2>&1
-ping -n 2 127.0.0.1 >nul
-
-:: Try to find and run Discord uninstaller from common path
-SET "DISCORD_UNINST=%LOCALAPPDATA%\Discord\Update.exe"
-IF EXIST "!DISCORD_UNINST!" (
-    echo [DISCORD] Running Discord uninstaller...
-    start /wait "" "!DISCORD_UNINST!" --uninstall
+:: Ensure Discord PTB is closed to unlock files
+echo [PROCESS] Closing Discord PTB to prevent file locks...
+tasklist /FI "IMAGENAME eq DiscordPTB.exe" 2>NUL | find /I /N "DiscordPTB.exe">NUL
+if "%ERRORLEVEL%"=="0" (
+    taskkill /f /im DiscordPTB.exe >nul 2>&1
     ping -n 3 127.0.0.1 >nul
-) ELSE (
-    echo [WARNING] Regular Discord uninstaller not found. Skipping removal.
 )
-
-:INSTALL_PTB_ONLY
-echo [DISCORD] Downloading and installing Discord PTB...
-SET "PTB_INSTALLER=%TEMP%\DiscordPTBSetup.exe"
-:: Use PowerShell to download PTB installer
-powershell -Command "Invoke-WebRequest -Uri 'https://discordapp.com/api/download/ptb?platform=win' -OutFile '!PTB_INSTALLER!'" >nul 2>&1
-IF NOT EXIST "!PTB_INSTALLER!" (
-    echo [ERROR] Failed to download Discord PTB installer.
-    exit /b 1
-)
-echo [DISCORD] Launching PTB installer...
-start /wait "" "!PTB_INSTALLER!"
-del "!PTB_INSTALLER!" >nul 2>&1
-echo [DISCORD] Discord PTB installed.
-ping -n 3 127.0.0.1 >nul
-
-:AFTER_DISCORD_SETUP
-
-:: Close Discord PTB to unlock files
-echo Closing Discord PTB to prevent file locks...
-taskkill /f /im DiscordPTB.exe >nul 2>&1
-ping -n 3 127.0.0.1 >nul
 
 :: --- BRANCH LOGIC ---
-IF "!MODE!"=="uninstall" GOTO UNINSTALL_FLOW
-
 :INSTALL_FLOW
 echo [1/5] Checking Vencord Source...
 IF EXIST "%VENCORD_DIR%" (
@@ -147,33 +104,4 @@ echo ====================================================
 echo   SUCCESS: Injected into Discord PTB.
 echo ====================================================
 echo.
-exit
-
-:UNINSTALL_FLOW
-echo [!] Uninstall Mode Selected
-IF NOT EXIST "%VENCORD_DIR%" (
-    echo [ERROR] Vencord folder not found at "!VENCORD_DIR!"
-    echo Cannot uninstall without the source folder.
-    pause
-    exit /b 1
-)
-
-pushd "%VENCORD_DIR%" || exit /b 1
-echo.
-echo [1/2] Uninstalling from Discord...
-call npx pnpm uninject --branch ptb || (
-    echo [ERROR] Uninjection failed. Ensure Discord is fully closed.
-    pause
-    exit /b 1
-)
-
-echo.
-echo [2/2] Cleanup complete.
-popd
-
-echo.
-echo ====================================================
-echo   SUCCESS: Uninstalled from Discord PTB.
-echo ====================================================
-echo.
-exit
+exit /b 0

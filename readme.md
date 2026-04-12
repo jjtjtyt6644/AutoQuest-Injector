@@ -17,11 +17,31 @@ Designed to make the installation process seamless, the AutoQuest Injector provi
 
 ---
 
+## 🛡️ Security & Transparency
+
+As this is an independent, open-source project, you will encounter a **"Windows Protected your PC"** (SmartScreen) warning when running the installer.
+
+### Why does this happen?
+*   **Unsigned Executable**: Official Microsoft code-signing certificates cost roughly $400/year. As an independent developer, I prioritize keeping this tool free rather than paying for a digital signature.
+*   **System Commands**: The tool manages your local Discord installation via batch scripts. Windows reflects this as "potentially risky" because it interacts with your system files.
+
+### Why you can trust this tool:
+1.  **Read the Source**: This entire repository is open source. You can manually inspect every line of the [Backend batch script](./injectquest.bat) to see exactly what is happening.
+2.  **Verified Logic**: This tool does nothing more than automate the official Vencord installation steps using Git and Node.js.
+3.  **Community Driven**: We build on top of [Vencord](https://vencord.dev/), one of the most trusted and widely used Discord modification frameworks in the world.
+
+> [!TIP]
+> **Check the security yourself**: To verify this tool is safe, you can upload our `.exe` to [VirusTotal](https://www.virustotal.com).
+> 
+> [![VirusTotal Scan](https://img.shields.io/badge/VirusTotal-Scan_Report-blue?logo=virustotal)](https://www.virustotal.com/gui/file/cf6b220954ef96b25556ca78d1e2725b275a3dc8cf0201db20941c485a21f0a0?nocache=1)
+
+---
+
 ## 📥 How to Use
 
 ### Using the Compiled Installer (Recommended)
 
-1.  **Download**: Get the `AutoQuest Injector Setup.exe` from the [Releases page](https://github.com/jjtjtyt6644/AutoQuest-Injector/releases/download/V1.0.0/AutoQuest.Injector.Setup.1.0.0.exe).
+1.  **Download**: Get the `AutoQuest Injector Setup.exe` from the [Releases page](https://github.com/jjtjtyt6644/AutoQuest-Injector/releases/download/v1.2.0/AutoQuest.Injector.Setup.1.2.0.exe) or press this button
 2.  **Install**: Run the executable. It will automatically add a shortcut to your Desktop.
 3.  **Inject**: Follow the animated setup wizard to clone the source and install the plugin.
 4.  **Discord Updated?**: Whenever Discord updates, simply open the app from your desktop and click **Start Injection** to re-patch the new version files.
