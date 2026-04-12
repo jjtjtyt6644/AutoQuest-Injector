@@ -62,7 +62,7 @@ The GUI handles the complex automation, but your system must meet these baseline
 
 The application is split into two robust layers:
 
-1.  **Frontend (Electron)**: Located in the `/ui/` directory. Provides the multi-step `index.html` interface styled with custom CSS glassmorphism. Communicates via IPC bridges to handle OS-level checks and process management.
+1.  **Frontend (Electron)**: Located in the `/ui/` directory not shown sadly. Provides the multi-step `index.html` interface styled with custom CSS glassmorphism. Communicates via IPC bridges to handle OS-level checks and process management.
 2.  **Backend Engine (Batch)**: The `injectquest.bat` file acts as the core engine. Driven dynamically by the Electron frontend, it accepts parameterized inputs to handle silent cloning, dependency management (`pnpm`), and automated Discord patching.
 
 ---
