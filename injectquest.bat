@@ -1,4 +1,5 @@
 @echo off
+chcp 65001 >nul 2>&1
 setlocal enabledelayedexpansion
 
 echo ====================================================
@@ -7,8 +8,10 @@ echo ====================================================
 
 :: --- CONFIGURATION ---
 SET "ROOT_DIR=%~dp0"
-SET "VENCORD_BASE=%~1"
 
+:: Read from env vars (Unicode-safe) with fallback to cmd args
+SET "VENCORD_BASE=%AQ_VPATH%"
+IF "!VENCORD_BASE!"=="" SET "VENCORD_BASE=%~1"
 IF "!VENCORD_BASE!"=="" SET "VENCORD_BASE=!ROOT_DIR!"
 
 :: Ensure trailing backslash before appending
@@ -17,7 +20,8 @@ SET "VENCORD_DIR=!VENCORD_BASE!Vencord_Modified"
 SET "PLUGIN_DIR=!VENCORD_DIR!\src\userplugins\CompleteDiscordQuest"
 
 :: Mode: install or uninstall
-SET "MODE=%~2"
+SET "MODE=%AQ_MODE%"
+IF "!MODE!"=="" SET "MODE=%~2"
 IF "!MODE!"=="" SET "MODE=install"
 
 echo Mode: !MODE!

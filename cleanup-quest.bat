@@ -1,4 +1,5 @@
 @echo off
+chcp 65001 >nul 2>&1
 setlocal enabledelayedexpansion
 
 echo ====================================================
@@ -6,9 +7,12 @@ echo           CLEANUP ^& RESTORE ENGINE
 echo ====================================================
 
 :: Mode: uninject, shred-ptb, shred-discord, restore-stable
-SET "MODE=%~1"
+:: Read from env vars (Unicode-safe) first, fall back to cmd args
+SET "MODE=%AQ_CLEANUP_MODE%"
+IF "!MODE!"=="" SET "MODE=%~1"
 IF "!MODE!"=="" SET "MODE=uninject"
-SET "VENCORD_DIR=%~2"
+SET "VENCORD_DIR=%AQ_VENCORD_DIR%"
+IF "!VENCORD_DIR!"=="" SET "VENCORD_DIR=%~2"
 
 echo Target Mode: !MODE!
 echo.

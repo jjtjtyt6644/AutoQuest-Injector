@@ -1,4 +1,5 @@
 @echo off
+chcp 65001 >nul 2>&1
 setlocal enabledelayedexpansion
 
 echo ====================================================
@@ -6,7 +7,9 @@ echo           Discord PTB Setup Engine
 echo ====================================================
 
 :: Mode: install-ptb, replace-discord, uninstall-ptb, install-stable
-SET "MODE=%~1"
+:: Read from env var (Unicode-safe) first, fall back to cmd arg
+SET "MODE=%AQ_DISCORD_MODE%"
+IF "!MODE!"=="" SET "MODE=%~1"
 IF "!MODE!"=="" SET "MODE=install-ptb"
 
 echo Target Mode: !MODE!

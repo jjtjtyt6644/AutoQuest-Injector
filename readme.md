@@ -33,7 +33,7 @@ As this is an independent, open-source project, you will encounter a **"Windows 
 > [!TIP]
 > **Check the security yourself**: To verify this tool is safe, you can upload our `.exe` to [VirusTotal](https://www.virustotal.com).
 > 
-> [![VirusTotal Scan](https://img.shields.io/badge/VirusTotal-Scan_Report-blue?logo=virustotal)](https://www.virustotal.com/gui/file/4bbb1e7e89ddd51c21476663f69aac11e366fa0a54c15786c635cb4fed603482?nocache=1)
+> [![VirusTotal Scan](https://img.shields.io/badge/VirusTotal-Scan_Report-blue?logo=virustotal)](https://www.virustotal.com/gui/file/6b581b751414c528f8de68de9332b8b43b055dbd75142b6297bbf11f0be961ca?nocache=1)
 
 ---
 
