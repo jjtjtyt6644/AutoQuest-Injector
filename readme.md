@@ -5,7 +5,8 @@
 Designed to make the installation process seamless, the AutoQuest Injector provides a beautiful glassmorphism-inspired setup wizard that handles everything from environment checks to Discord client management and plugin injection.
 
 ---
-
+## Notice
+This project is for educational purposes and proof-of-concept only. Using this plugin violates Discord's Terms of Service. I am not responsible for any banned accounts or legal issues resulting from the use of this code.
 ## ✨ Key Features
 
 * **Premium UI/UX**: A sleek, dark-mode graphical wrapper featuring custom transitions and step-by-step navigation.
